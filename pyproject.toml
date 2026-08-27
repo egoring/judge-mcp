@@ -1,0 +1,31 @@
+[project]
+name = "judge-mcp"
+version = "0.1.0"
+description = "LLM-as-Judge text quality evaluation as an MCP server - score, benchmark, and cross-check judge models against human-labeled golden sets"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Jinbeom Jeong", email = "jinbeomj90@gmail.com" }]
+keywords = ["mcp", "llm-as-judge", "evaluation", "llm", "quality"]
+dependencies = [
+    "mcp>=1.2.0",
+    "httpx>=0.27",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+judge-mcp = "judge_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/judge_mcp"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
