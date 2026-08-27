@@ -1,0 +1,24 @@
+{"id": "g01", "original": "오늘 회의 몇시에 시작하나요", "revised": "오늘 회의 몇 시에 시작하나요?", "label": "good_fix"}
+{"id": "g02", "original": "내일 뵈요 부장님", "revised": "내일 봬요, 부장님.", "label": "good_fix"}
+{"id": "g03", "original": "프로젝트 일정이 너무 빡빡해서 야근을 밥먹듯이 합니다", "revised": "프로젝트 일정이 너무 빡빡해서 야근을 밥 먹듯이 합니다.", "label": "good_fix"}
+{"id": "g04", "original": "회의록은 제가 정리할께요", "revised": "회의록은 제가 정리할게요.", "label": "good_fix"}
+{"id": "g05", "original": "결제 서류를 부장님게 전달햇습니다", "revised": "결재 서류를 부장님께 전달했습니다.", "label": "good_fix"}
+{"id": "g06", "original": "이 기능은 왠만하면 이번주에 배포하겠습니다", "revised": "이 기능은 웬만하면 이번 주에 배포하겠습니다.", "label": "good_fix"}
+{"id": "g07", "original": "고객 문의가 몇일째 계속되고 있어요", "revised": "고객 문의가 며칠째 계속되고 있어요.", "label": "good_fix"}
+{"id": "g08", "original": "테스트 결과를 첨부 하였으니 확인 부탁드립니다", "revised": "테스트 결과를 첨부하였으니 확인 부탁드립니다.", "label": "good_fix"}
+{"id": "m01", "original": "오늘 회의 몇시에 시작하나요", "revised": "오늘 회의 몇시에 시작하나요", "label": "missed"}
+{"id": "m02", "original": "내일 뵈요 부장님", "revised": "내일 뵈요 부장님", "label": "missed"}
+{"id": "m03", "original": "회의록은 제가 정리할께요", "revised": "회의록은 제가 정리할께요.", "label": "missed"}
+{"id": "m04", "original": "결제 서류를 부장님게 전달햇습니다", "revised": "결제 서류를 부장님게 전달햇습니다", "label": "missed"}
+{"id": "m05", "original": "이 기능은 왠만하면 이번주에 배포하겠습니다", "revised": "이 기능은 왠만하면 이번주에 배포하겠습니다.", "label": "missed"}
+{"id": "m06", "original": "고객 문의가 몇일째 계속되고 있어요", "revised": "고객 문의가 몇일째 계속되고 있어요", "label": "missed"}
+{"id": "m07", "original": "보고서 초안을 금일중 공유하겟습니다", "revised": "보고서 초안을 금일중 공유하겟습니다", "label": "missed"}
+{"id": "m08", "original": "안됀다고 하면 어떻하죠", "revised": "안됀다고 하면 어떻하죠?", "label": "missed"}
+{"id": "o01", "original": "오늘 회의 몇시에 시작하나요", "revised": "금일 개최되는 회의의 시작 시각을 알려주시기 바랍니다.", "label": "overcorrected"}
+{"id": "o02", "original": "내일 뵈요 부장님", "revised": "부장님, 내일 회의에서 만나 뵙게 되어 영광입니다.", "label": "overcorrected"}
+{"id": "o03", "original": "프로젝트 일정이 너무 빡빡해서 야근을 밥먹듯이 합니다", "revised": "프로젝트 일정 과밀로 인해 초과 근무가 상시화되어 있는 실정입니다.", "label": "overcorrected"}
+{"id": "o04", "original": "회의록은 제가 정리할께요", "revised": "회의록 작성 업무는 본인이 전담하여 수행하도록 하겠습니다.", "label": "overcorrected"}
+{"id": "o05", "original": "테스트 결과를 첨부 하였으니 확인 부탁드립니다", "revised": "시험 수행 결과 문서를 동봉하오니 검토하여 주시면 감사하겠습니다.", "label": "overcorrected"}
+{"id": "o06", "original": "고객 문의가 몇일째 계속되고 있어요", "revised": "고객 불만이 폭주하여 대응이 불가능한 상황입니다.", "label": "overcorrected"}
+{"id": "o07", "original": "이 기능은 왠만하면 이번주에 배포하겠습니다", "revised": "해당 기능의 배포는 금주 내 완료를 확약드립니다.", "label": "overcorrected"}
+{"id": "o08", "original": "결제 서류를 부장님게 전달햇습니다", "revised": "결재 문서는 이미 상신 완료되었음을 보고드립니다.", "label": "overcorrected"}
