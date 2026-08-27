@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "judge-mcp": {
+      "command": "judge-mcp",
+      "env": {
+        "JUDGE_API_BASE": "http://localhost:8000/v1",
+        "JUDGE_API_KEY": "local",
+        "JUDGE_MODEL": "Qwen/Qwen2.5-7B-Instruct-AWQ"
+      }
+    }
+  }
+}
