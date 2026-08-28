@@ -11,6 +11,7 @@ GOLDEN = Path(__file__).resolve().parents[1] / "data" / "golden_set.jsonl"
 
 
 def test_load_bundled_golden_set():
+    """내장 골든셋 24문항이 형식 검증을 통과하며 로드된다."""
     items = load_golden_set(GOLDEN)
     assert len(items) == 24
     labels = {i["label"] for i in items}
@@ -18,6 +19,7 @@ def test_load_bundled_golden_set():
 
 
 def test_load_rejects_bad_label(tmp_path):
+    """유효하지 않은 라벨이 있으면 행 번호와 함께 거절한다."""
     p = tmp_path / "bad.jsonl"
     p.write_text('{"id": "x", "original": "a", "revised": "b", "label": "unknown"}', encoding="utf-8")
     with pytest.raises(ValueError, match="라벨"):
@@ -25,6 +27,7 @@ def test_load_rejects_bad_label(tmp_path):
 
 
 def test_load_rejects_missing_field(tmp_path):
+    """필수 필드 누락 행은 거절한다."""
     p = tmp_path / "bad.jsonl"
     p.write_text('{"id": "x", "original": "a", "label": "missed"}', encoding="utf-8")
     with pytest.raises(ValueError, match="revised"):
@@ -32,6 +35,7 @@ def test_load_rejects_missing_field(tmp_path):
 
 
 def test_is_correct_direction():
+    """라벨별 판정 방향(잘 고침=높게, 방치·과교정=낮게)이 맞는다."""
     assert is_correct("good_fix", 8.5)          # 잘 고침 -> 높은 점수가 정답
     assert not is_correct("good_fix", 4.0)
     assert is_correct("missed", 3.0)            # 방치 -> 낮은 점수가 정답
@@ -40,6 +44,7 @@ def test_is_correct_direction():
 
 
 def test_missed_judged_by_improvement_axis():
+    """방치 버킷은 종합이 아니라 개선 축(≤4)으로 판정한다 — 실측이 잡아낸 설계 교훈."""
     # 방치는 의미 보존·절제가 만점이라 종합이 높게 나온다 — improvement 축으로 판정해야 한다
     assert is_correct("missed", 8.4, improvement=2.0)       # 종합은 높아도 개선 축이 낮으면 정답
     assert not is_correct("missed", 8.4, improvement=9.0)   # 개선 축까지 높으면 오답
@@ -47,17 +52,20 @@ def test_missed_judged_by_improvement_axis():
 
 
 def test_missed_falls_back_to_total_without_improvement():
+    """개선 축이 없으면 방치도 종합 점수로 폴백 판정한다."""
     assert is_correct("missed", 3.0)
     assert not is_correct("missed", 8.0)
 
 
 def test_is_correct_fair_zone_counts_as_wrong():
+    """회색 지대(5~7점)는 어느 라벨에서도 정답이 아니다 — 보수적 채점."""
     # 판정 회색 지대(5~7 사이)는 어느 라벨에서도 정답이 아니다 — 보수적 채점
     assert not is_correct("good_fix", 6.0)
     assert not is_correct("missed", 6.0)
 
 
 def test_build_scorecard_accuracy():
+    """버킷별·전체 정확도가 올바르게 집계된다."""
     results = [
         {"label": "good_fix", "total": 9.0},       # 정답
         {"label": "good_fix", "total": 4.0},       # 오답
@@ -72,6 +80,7 @@ def test_build_scorecard_accuracy():
 
 
 def test_agreement_within_tolerance():
+    """±1점 일치율·판정 일치율·평균 차가 올바르게 계산된다."""
     a = [8.0, 3.0, 5.0, 9.0]
     b = [7.5, 4.5, 5.0, 6.0]
     out = agreement(a, b)
@@ -81,10 +90,12 @@ def test_agreement_within_tolerance():
 
 
 def test_agreement_rejects_mismatched_lengths():
+    """길이가 다른 두 점수 목록은 거절한다."""
     with pytest.raises(ValueError):
         agreement([1.0], [1.0, 2.0])
 
 
 def test_agreement_rejects_empty():
+    """빈 점수 목록은 거절한다."""
     with pytest.raises(ValueError):
         agreement([], [])
