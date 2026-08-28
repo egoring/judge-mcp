@@ -84,6 +84,16 @@ The first run scored **62.5% — with the `missed` bucket at 0/8**. Root cause: 
 
 Fix: the `missed` bucket is now judged on the **improvement axis** (<= 4) instead of the total. Rerun: 62.5% -> **83.3%**, missed 0/8 -> 7/8. This is exactly what the golden-set regression loop exists for — it turned a silent evaluation-design flaw into a measured, fixed, and regression-tested lesson. (Remaining gap: `overcorrected` shows run-to-run variance of the LLM judge — a candidate for few-shot anchor tuning, verifiable by the same regression loop.)
 
+## Observability (Langfuse, optional)
+
+```bash
+pip install "langfuse>=2,<3"
+export LANGFUSE_PUBLIC_KEY="pk-..." LANGFUSE_SECRET_KEY="sk-..."
+python scripts/run_golden.py --backend claude-cli --langfuse
+```
+
+Each golden-set run pushes one trace plus scores (overall accuracy, per-bucket accuracy, per-item totals) to Langfuse, so judge accuracy can be regression-compared across rubric/prompt changes. Without keys, behavior is unchanged.
+
 ## Design notes
 
 - **Judge validation is the point.** `judge_run_golden_set` exists because judge models disagree wildly out of the box; picking one without an exam is guessing. Accuracy is directional: a *good fix* must score high (≥7), a *missed* or *over-corrected* revision must score low (≤5) — the gray zone counts as wrong, on purpose.

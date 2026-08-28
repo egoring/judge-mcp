@@ -12,6 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from judge_mcp.judge import score_pair  # noqa: E402
+from judge_mcp.langfuse_sink import client_from_env, push_scorecard  # noqa: E402
 from judge_mcp.llm import LLMClient, LLMError  # noqa: E402
 from judge_mcp.scorecard import build_scorecard, load_golden_set  # noqa: E402
 
@@ -68,6 +69,11 @@ def main() -> None:
         help="api=OpenAI 호환 HTTP(JUDGE_* 환경 변수) / claude-cli=Claude 구독으로 `claude -p` 호출",
     )
     parser.add_argument("--model", default=None, help="모델명 (api: JUDGE_MODEL 기본 / claude-cli: sonnet 기본)")
+    parser.add_argument(
+        "--langfuse",
+        action="store_true",
+        help="성적표를 Langfuse에 점수로 적재한다 (LANGFUSE_* 환경 변수 필요)",
+    )
     parser.add_argument("--limit", type=int, default=0, help="문항 수 상한 (0=전체 24문항)")
     parser.add_argument(
         "--golden",
@@ -95,7 +101,7 @@ def main() -> None:
 
     print(f"[judge-mcp] 모델 '{model}' · {len(items)}문항 시험 시작 ({where})", file=sys.stderr)
 
-    results = []
+    results, details = [], []
     for i, item in enumerate(items, 1):
         try:
             scored = score_pair(client, item["original"], item["revised"], model=args.model)
@@ -103,12 +109,20 @@ def main() -> None:
             print(f"\n[중단] {e}", file=sys.stderr)
             sys.exit(1)
         results.append({"label": item["label"], "total": scored["total"], "improvement": scored["scores"].get("improvement")})
+        details.append({"id": item["id"], "label": item["label"], "total": scored["total"], "verdict": scored["verdict"]})
         print(f"  {i:>2}/{len(items)} {item['id']} [{item['label']:<13}] total={scored['total']:>5} {scored['verdict']}", file=sys.stderr)
 
     card = build_scorecard(results)
     card["model"] = model
     card["backend"] = args.backend
     print(json.dumps(card, ensure_ascii=False, indent=2))
+
+    if args.langfuse:
+        try:
+            push_scorecard(card, details, client_from_env())
+            print("[judge-mcp] Langfuse에 성적표를 적재했습니다.", file=sys.stderr)
+        except RuntimeError as e:
+            print(f"[경고] Langfuse 적재 실패: {e}", file=sys.stderr)
 
 
 if __name__ == "__main__":

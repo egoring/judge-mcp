@@ -65,6 +65,16 @@ Claude Desktop 설정 예시는 [examples/](examples/claude_desktop_config.json)
 
 수정: 방치 버킷 판정을 종합 점수 대신 **개선(improvement) 축 ≤ 4**로 변경. 재시험 결과 62.5% → **83.3%**, 방치 0/8 → 7/8. 골든셋 회귀 루프가 존재하는 이유가 바로 이것이다 — 조용히 숨어 있던 평가 설계 결함을 실측으로 드러내고, 고치고, 회귀 테스트로 잠갔다. (남은 격차: 과교정 버킷은 LLM 채점의 실행 간 변동이 관찰됨 — Few-shot 앵커 보강 후보이며, 같은 회귀 루프로 개선을 검증할 수 있다.)
 
+## 관측 (Langfuse, 선택)
+
+```bash
+pip install "langfuse>=2,<3"
+export LANGFUSE_PUBLIC_KEY="pk-..." LANGFUSE_SECRET_KEY="sk-..."
+python scripts/run_golden.py --backend claude-cli --langfuse
+```
+
+골든셋 실행마다 트레이스 1건과 점수(전체 정확도 · 버킷별 정확도 · 문항별 종합 점수)가 Langfuse에 쌓입니다. 루브릭·프롬프트를 바꿀 때마다 돌리면 채점기 정확도의 추이를 대시보드에서 회귀 비교할 수 있습니다. 미설정 시 기존 동작과 완전히 동일합니다.
+
 ## 설계 노트
 
 - **채점기 검증이 핵심입니다.** 채점기 모델들은 기본 상태에서 성향이 극과 극이라, 시험 없이 고르는 건 추측입니다. 정확도는 방향으로 판정합니다 — 잘 고친 수정은 높게(≥7), 방치·과교정은 낮게(≤5). 회색 지대(5~7)는 의도적으로 오답 처리합니다.
@@ -75,7 +85,7 @@ Claude Desktop 설정 예시는 [examples/](examples/claude_desktop_config.json)
 
 ```bash
 pip install -e ".[dev]"
-pytest   # 21건, 네트워크 불필요 (모의 LLM)
+pytest   # 26건, 네트워크 불필요 (모의 LLM·모의 Langfuse)
 ```
 
 ## 라이선스
