@@ -1,0 +1,27 @@
+{
+  "n_items": 24,
+  "accuracy": 0.8333,
+  "buckets": {
+    "good_fix": {
+      "n": 8,
+      "correct": 8,
+      "accuracy": 1.0
+    },
+    "missed": {
+      "n": 8,
+      "correct": 7,
+      "accuracy": 0.875
+    },
+    "overcorrected": {
+      "n": 8,
+      "correct": 5,
+      "accuracy": 0.625
+    }
+  },
+  "thresholds": {
+    "good": 7.0,
+    "poor": 5.0
+  },
+  "model": "sonnet",
+  "backend": "claude-cli"
+}
