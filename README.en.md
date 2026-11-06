@@ -10,7 +10,7 @@ Score original/revised text pairs with a weighted multi-axis rubric, benchmark j
 
 ## Why
 
-Text revision (proofreading, rewriting, summarizing) has no single ground truth, so teams increasingly use LLM judges to score quality. But an unvalidated judge is just another opinion. This server packages a methodology proven in a production log analysis project:
+Text revision (proofreading, rewriting, summarizing) has no single ground truth, so teams increasingly use LLM judges to score quality. But an unvalidated judge is just another opinion. This server packages a methodology proven in a capstone project built on real service logs:
 
 1. **Multi-axis weighted rubric** — meaning preservation, naturalness, actual improvement, and over-correction restraint, instead of one opaque score.
 2. **Golden-set exam** — judge candidates are *tested* against human labels (good fix / missed / over-corrected), never trained on them, so the golden set stays a valid exam and can be reused as a regression test whenever the rubric changes.
